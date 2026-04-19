@@ -1,9 +1,8 @@
 import 'package:flutter_frontend/features/auth/domain/repositories/auth_repository.dart';
 
-
-class Logout {
+class RefreshToken {
   final AuthRepository repository;
-  Logout(this.repository);
+  RefreshToken(this.repository);
 
-  Future<void> call() => repository.logout();
+  Future<String> call() => repository.refreshAccessToken();
 }
