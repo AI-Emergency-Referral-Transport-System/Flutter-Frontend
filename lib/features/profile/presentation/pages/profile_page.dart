@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/theme/theme_cubit.dart';
 import '../../../auth/domain/user_role.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../auth/presentation/pages/role_selection_page.dart';
@@ -100,6 +101,22 @@ class _ProfilePageState extends State<ProfilePage> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, mode) {
+              return SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Dark mode'),
+                subtitle: const Text('Uses saved preference on all screens'),
+                value: mode == ThemeMode.dark,
+                onChanged: (v) {
+                  context.read<ThemeCubit>().setThemeMode(
+                    v ? ThemeMode.dark : ThemeMode.light,
+                  );
+                },
+              );
+            },
+          ),
+          const Divider(),
           CircleAvatar(
             radius: 36,
             child: Text(

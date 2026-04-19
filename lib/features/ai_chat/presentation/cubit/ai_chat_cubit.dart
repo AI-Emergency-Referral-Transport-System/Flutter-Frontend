@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/ai_chat_repository.dart';
 import '../../domain/models/chat_message.dart';
 import '../../domain/models/hospital_recommendation.dart';
+import '../../domain/models/transport_recommendation.dart';
 
 part 'ai_chat_state.dart';
 
@@ -51,6 +52,7 @@ class AiChatCubit extends Cubit<AiChatState> {
           isSending: false,
           conversationId: response.conversationId,
           recommendations: response.recommendations,
+          transportRecommendations: response.transportRecommendations,
           messages: [...updatedMessages, aiMessage],
           errorMessage: null,
           lastResponseEmergency: response.isEmergency,

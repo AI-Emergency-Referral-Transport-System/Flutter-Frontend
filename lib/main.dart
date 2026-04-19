@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/api_client.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_cubit.dart';
 import 'features/ai_chat/data/ai_chat_repository.dart';
 import 'features/ai_chat/presentation/cubit/ai_chat_cubit.dart';
 import 'features/auth/data/auth_repository.dart';
@@ -40,6 +41,9 @@ class DerashApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (_) => ThemeCubit(prefs)..load(),
+          ),
           BlocProvider(create: (_) => AuthCubit(authRepository)),
           BlocProvider(create: (_) => TripCubit()),
           BlocProvider(create: (_) => HospitalOpsCubit()),
@@ -48,11 +52,17 @@ class DerashApp extends StatelessWidget {
           ),
           BlocProvider(create: (_) => AiChatCubit(aiChatRepository)),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Derash',
-          theme: AppTheme.light,
-          home: const SplashPage(),
+        child: BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Derash',
+              themeMode: themeMode,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              home: const SplashPage(),
+            );
+          },
         ),
       ),
     );

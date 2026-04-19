@@ -45,12 +45,15 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final top = Color.lerp(scheme.surfaceContainerLow, scheme.primaryContainer, 0.35)!;
+    final bottom = scheme.surface;
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFEAF8FF), Colors.white],
+            colors: [top, bottom],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

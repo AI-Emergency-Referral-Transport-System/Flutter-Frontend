@@ -32,6 +32,31 @@
   <title>flutter_frontend</title>
   <link rel="manifest" href="manifest.json">
 
+  <style>
+    :root {
+      --app-canvas: #f7fafc;
+      --app-canvas-2: #ffffff;
+    }
+    [data-theme="dark"] {
+      --app-canvas: #12151a;
+      --app-canvas-2: #1a1f26;
+    }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--app-canvas);
+    }
+    flutter-view, flt-scene-host {
+      background: transparent;
+    }
+  </style>
+  <script>
+    try {
+      var m = localStorage.getItem('derash_theme_mode');
+      document.documentElement.setAttribute('data-theme', m === 'dark' ? 'dark' : 'light');
+    } catch (e) {}
+  </script>
+
   <!--
     Required for google_maps_flutter on Web (patient + driver tracking).
     Create a key in Google Cloud Console, enable "Maps JavaScript API", restrict to HTTP referrers for your dev URL.

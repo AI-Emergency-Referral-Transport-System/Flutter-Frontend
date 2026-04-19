@@ -4,6 +4,7 @@ class AiChatState extends Equatable {
   const AiChatState({
     this.messages = const [],
     this.recommendations = const [],
+    this.transportRecommendations = const [],
     this.conversationId = '',
     this.isSending = false,
     this.selectingHospitalId,
@@ -14,6 +15,7 @@ class AiChatState extends Equatable {
 
   final List<ChatMessage> messages;
   final List<HospitalRecommendation> recommendations;
+  final List<TransportRecommendation> transportRecommendations;
   final String conversationId;
   final bool isSending;
   final String? selectingHospitalId;
@@ -22,11 +24,13 @@ class AiChatState extends Equatable {
   final bool lastResponseEmergency;
 
   bool get showHospitalCta =>
-      lastResponseEmergency && recommendations.isNotEmpty;
+      lastResponseEmergency &&
+      (recommendations.isNotEmpty || transportRecommendations.isNotEmpty);
 
   AiChatState copyWith({
     List<ChatMessage>? messages,
     List<HospitalRecommendation>? recommendations,
+    List<TransportRecommendation>? transportRecommendations,
     String? conversationId,
     bool? isSending,
     String? selectingHospitalId,
@@ -37,6 +41,8 @@ class AiChatState extends Equatable {
     return AiChatState(
       messages: messages ?? this.messages,
       recommendations: recommendations ?? this.recommendations,
+      transportRecommendations:
+          transportRecommendations ?? this.transportRecommendations,
       conversationId: conversationId ?? this.conversationId,
       isSending: isSending ?? this.isSending,
       selectingHospitalId: selectingHospitalId,
@@ -51,6 +57,7 @@ class AiChatState extends Equatable {
   List<Object?> get props => [
     messages,
     recommendations,
+    transportRecommendations,
     conversationId,
     isSending,
     selectingHospitalId,

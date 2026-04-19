@@ -1,0 +1,1 @@
+void applyWebThemeMode(String mode) {}

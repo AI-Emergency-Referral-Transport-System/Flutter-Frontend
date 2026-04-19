@@ -41,6 +41,8 @@ class HospitalOpsCubit extends Cubit<HospitalOpsState> {
     int? beds,
     int? icu,
     int? oxygen,
+    int? rooms,
+    List<String>? capacityTimeSlots,
   }) {
     emit(
       state.copyWith(
@@ -48,9 +50,39 @@ class HospitalOpsCubit extends Cubit<HospitalOpsState> {
           bedsAvailable: beds ?? state.resources.bedsAvailable,
           icuAvailable: icu ?? state.resources.icuAvailable,
           oxygenUnitsAvailable: oxygen ?? state.resources.oxygenUnitsAvailable,
+          roomsAvailable: rooms ?? state.resources.roomsAvailable,
+          capacityTimeSlots:
+              capacityTimeSlots ?? state.resources.capacityTimeSlots,
         ),
       ),
     );
+  }
+
+  void removeIncoming(String id) {
+    emit(
+      state.copyWith(
+        incoming: state.incoming.where((e) => e.id != id).toList(),
+      ),
+    );
+  }
+
+  /// Applies one bed deduction and marks the referral reservation finalized.
+  bool acceptIncomingReservation(String id) {
+    final idx = state.incoming.indexWhere((e) => e.id == id);
+    if (idx == -1) return false;
+    final p = state.incoming[idx];
+    if (p.reservationFinalized) return false;
+    if (state.resources.bedsAvailable <= 0) return false;
+    final newBeds = state.resources.bedsAvailable - 1;
+    final list = [...state.incoming];
+    list[idx] = p.copyWith(reservationFinalized: true);
+    emit(
+      state.copyWith(
+        resources: state.resources.copyWith(bedsAvailable: newBeds),
+        incoming: list,
+      ),
+    );
+    return true;
   }
 
   void reserveBed() {
