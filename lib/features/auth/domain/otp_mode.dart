@@ -1,0 +1,1 @@
+enum OtpMode { signup, login }
